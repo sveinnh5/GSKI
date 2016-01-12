@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+class Matrix{
+
+
+public:
+    Matrix();
+    ~Matrix();
+    Matrix(int n, int m);
+
+
+
+private:
+    int X;
+    int Y;
+    int **array;
+
+};
+Matrix::Matrix(){
+    X = 0;
+    Y = 0;
+    array = NULL;
+}
+
+Matrix::Matrix(int n, int m){
+    X = n;
+    Y = m;
+    array = new int *[X];
+    for(int i = 0; i < X; i++){
+        array[i] = new int [Y];
+    }
+}
+
+Matrix::~Matrix(){
+    if (X > 0 && Y > 0){
+        for (int i = 0; i < Y; i++){
+            delete []array[i];
+        }
+        delete []array;
+    }
+}
+
+
+int main()
+{
+    return 0;
+}
