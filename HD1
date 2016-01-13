@@ -1,50 +1,139 @@
+Matrix.h
+#ifndef MATRIX_H
+#define MATRIX_H
+
 #include <iostream>
-#include <cstdlib>
 
 using namespace std;
 
-class Matrix{
+const int NUM = 5;
 
-
-public:
-    Matrix();
-    ~Matrix();
-    Matrix(int n, int m);
-
-
-
-private:
-    int X;
-    int Y;
-    int **array;
-
-};
-Matrix::Matrix(){
-    X = 0;
-    Y = 0;
-    array = NULL;
-}
-
-Matrix::Matrix(int n, int m){
-    X = n;
-    Y = m;
-    array = new int *[X];
-    for(int i = 0; i < X; i++){
-        array[i] = new int [Y];
-    }
-}
-
-Matrix::~Matrix(){
-    if (X > 0 && Y > 0){
-        for (int i = 0; i < Y; i++){
-            delete []array[i];
-        }
-        delete []array;
-    }
-}
-
-
-int main()
+class Matrix
 {
-    return 0;
+    public:
+        Matrix();
+        Matrix(int n, int m);
+
+        friend ostream& operator << (ostream& outs, const Matrix& rhs);
+        friend istream& operator >> (istream& ins, Matrix& rhs);
+        friend Matrix& operator + (const Matrix& lhs, const Matrix& rhs);
+        friend Matrix& operator - (const Matrix& lhs, const Matrix& rhs);
+        
+        Matrix transpose();
+
+    private:
+
+        int fylki [NUM][NUM];
+
+        int N, M;
+};
+
+#endif // MATRIX_H
+
+--------------------------------------------------------------------------------------------------------------------------------
+Matrix.cpp
+
+
+using namespace std;
+
+
+
+Matrix::Matrix()
+{
+    N = 0;
+    M = 0;
 }
+
+Matrix::Matrix(int n, int m)
+{
+
+    N = n;
+    M = m;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            fylki[i][j] = 0;
+        }
+    }
+}
+
+
+ostream& operator << (ostream& outs, const Matrix& rhs)
+{
+    for (int i = 0; i < rhs.N; i++)
+    {
+        for (int j = 0; j < rhs.M; j++)
+        {
+            outs << rhs.fylki[i][j] << " ";
+        }
+        outs << endl;
+    }
+
+    return outs;
+}
+
+
+istream& operator >> (istream& ins, Matrix& rhs)
+{
+
+    for (int i = 0; i < rhs.N; i++)
+    {
+        for (int j = 0; j < rhs.M; j++)
+        {
+            ins >> rhs.fylki[i][j];
+        }
+    }
+
+
+    return ins;
+}
+
+
+ Matrix& operator + (const Matrix& lhs, const Matrix& rhs)
+ {
+    Matrix newMatrix(lhs.N, lhs.M);
+
+
+    for (int i = 0; i < lhs.N; i++)
+    {
+        for (int j = 0; j < lhs.M; j++)
+        {
+            newMatrix.fylki[i][j] = lhs.fylki[i][j] + rhs.fylki[i][j];
+        }
+    }
+
+
+     return newMatrix;
+ }
+
+ Matrix& operator - (const Matrix& lhs, const Matrix& rhs)
+ {
+
+    Matrix newMatrix (lhs.N, lhs.M);
+
+    for (int i = 0; i < lhs.N; i++)
+    {
+        for (int j = 0; j < lhs.M; j++)
+        {
+            newMatrix.fylki[i][j] = lhs.fylki[i][j] - rhs.fylki[i][j];
+        }
+    }
+
+     return newMatrix;
+ }
+ 
+ 
+ Matrix::Matrix::transpose()
+ {
+     Matrix newMatrix;
+     
+     
+     
+     
+     return newMatrix; 
+ }
+
+
+
