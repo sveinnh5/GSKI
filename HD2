@@ -1,84 +1,50 @@
-#include <iostream>
-#include <string>
 #include "arraylist.h"
-using namespace std;
-
-int readNum() {
-    int num;
-    cin >> num;
-    return num;
-}
+#include <assert.h>
+#include <string>
 
 template <class T>
-void print(ArrayList<T>& theList) {
-    for (theList.moveToStart(); theList.currPos() < theList.length(); theList.next()) {
-        cout << theList.value() << endl;
-    }
-    cout << endl;
-    theList.moveToStart();
-}
-
-template <class T>
-void readList(ArrayList<T>& theList) {
-    int count = readNum();
-    for (int i = 0; i < count; i++) {
-        T num;
-        cin >> num;
-        theList.append(num);
-    }
-}
-
-template <class T>
-void testList(ArrayList<T>& theList) {
-
-    readList(theList);
-    print(theList);
-    T firstElem = theList.value();
-
-    theList.next();
-    theList.next();
-    theList.remove();
-    print(theList);
-
-    theList.moveToEnd();
-    theList.prev();
-    T lastElem = theList.value();
-
-    int pos = theList.length() / 2;
-    theList.moveToPos(pos);
-    theList.insert(firstElem);
-    theList.moveToPos(++pos);
-    theList.insert(lastElem);
-    print(theList);
-
-    theList.moveToStart();
-    cout << theList.value() << endl;
-    theList.prev();
-    cout << theList.value() << endl;
-
-    theList.moveToEnd();
-    theList.prev();
-    cout << theList.value() << endl;
-    cout << endl;
-
-    theList.append(lastElem);
-    print(theList);
-
-    theList.clear();
-    theList.append(firstElem);
-    theList.append(lastElem);
-    print(theList);
-}
-
-int main()
+ArrayList<T>::ArrayList(int size)
 {
-    int initialSize = readNum();
-    ArrayList<int> myIntList(initialSize);
-    testList(myIntList);
+    maxSize = size;
+    currSize = 0;
+    moveToStart();
+    arr = new T[maxSize];
+}
 
-    initialSize = readNum();
-    ArrayList<string> myStringList(initialSize);
-    testList(myStringList);
+template <class T>
+ArrayList<T>::~ArrayList()
+{
+    delete [] arr;
+}
+template <class T>
+void ArrayList<T>::append(T elem) {
+    assert(currSize < maxSize); // List capacity exceeded
+    arr[currSize] = elem;
+    currSize++;
+}
+template <class T>
+void ArrayList<T>::next() {
+    if (currElemPos < currSize)
+        currElemPos++;
+}
 
-    return 0;
+template <class T>
+void ArrayList<T>::moveToStart() {
+    currElemPos = 0;
+}
+
+template <class T>
+int ArrayList<T>::length() const {
+    return currSize;
+}
+
+template <class T>
+int ArrayList<T>::currPos() const {
+    return currElemPos;
+}
+
+template <class T>
+T ArrayList<T>::value() const {
+    assert(currElemPos >=0 &&  currElemPos < currSize); // No current element
+    return arr[currElemPos];
 }
